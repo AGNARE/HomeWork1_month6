@@ -1,0 +1,62 @@
+package com.example.homework1_month7.Adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.homework1_month7.databinding.ItemTaskBinding
+import com.example.homework1_month7.model.Task
+
+@Suppress("UNUSED_EXPRESSION")
+class TaskAdapter(
+    var taskList: List<Task>,
+    var onLongClick:(Task) -> Unit,
+    private val onTaskCheckChanged: (position: Int, isChecked: Boolean) -> Unit
+) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        return TaskViewHolder(
+            ItemTaskBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val task = taskList[position]
+        holder.onBind(task)
+
+    }
+
+    override fun getItemCount(): Int {
+        return taskList.size
+    }
+
+  inner  class TaskViewHolder(private val binding: ItemTaskBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun onBind(task: Task) {
+            binding.tvTitle.text = task.title
+            binding.check.isChecked = task.isDone
+
+            // Обработка изменения состояния CheckBox
+            binding.check.setOnCheckedChangeListener(null)
+            binding.check.setOnCheckedChangeListener { _, _ ->
+                onTaskCheckChanged(adapterPosition)
+            }
+
+            itemView.setOnClickListener {
+                onLongClick(task)
+                false
+            }
+        }
+
+        private fun onTaskCheckChanged(position: Int) {
+            val task = taskList[position]
+            task.toggleDone()
+            notifyItemChanged(position)
+        }
+
+    }
+
+}
