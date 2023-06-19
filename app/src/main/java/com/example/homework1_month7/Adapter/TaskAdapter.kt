@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.homework1_month7.databinding.ItemTaskBinding
 import com.example.homework1_month7.model.Task
 
-@Suppress("UNUSED_EXPRESSION")
 class TaskAdapter(
     var taskList: List<Task>,
     var onLongClick:(Task) -> Unit,
@@ -41,8 +40,8 @@ class TaskAdapter(
 
             // Обработка изменения состояния CheckBox
             binding.check.setOnCheckedChangeListener(null)
-            binding.check.setOnCheckedChangeListener { _, _ ->
-                onTaskCheckChanged(adapterPosition)
+            binding.check.setOnCheckedChangeListener { _, isChecked ->
+                onTaskCheckChanged(adapterPosition, isChecked)
             }
 
             itemView.setOnClickListener {
@@ -51,12 +50,10 @@ class TaskAdapter(
             }
         }
 
-        private fun onTaskCheckChanged(position: Int) {
+        private fun onTaskCheckChanged(position: Int, isChecked: Boolean) {
             val task = taskList[position]
             task.toggleDone()
             notifyItemChanged(position)
         }
-
     }
-
 }
