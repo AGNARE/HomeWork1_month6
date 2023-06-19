@@ -9,7 +9,7 @@ class TaskViewModel: ViewModel() {
     val taskList: MutableLiveData<List<Task>?> = MutableLiveData()
 
     init {
-        taskList.value = listOf() // Изначально список задач пуст
+        taskList.value = listOf()
     }
 
     fun addTask(title: String){

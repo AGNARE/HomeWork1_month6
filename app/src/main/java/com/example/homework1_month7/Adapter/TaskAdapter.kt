@@ -38,7 +38,6 @@ class TaskAdapter(
             binding.tvTitle.text = task.title
             binding.check.isChecked = task.isDone
 
-            // Обработка изменения состояния CheckBox
             binding.check.setOnCheckedChangeListener(null)
             binding.check.setOnCheckedChangeListener { _, isChecked ->
                 onTaskCheckChanged(adapterPosition, isChecked)
@@ -53,7 +52,7 @@ class TaskAdapter(
         private fun onTaskCheckChanged(position: Int, isChecked: Boolean) {
             val task = taskList[position]
             task.toggleDone()
-            notifyItemChanged(position)
+            notifyItemChanged(position,isChecked)
         }
     }
 }
