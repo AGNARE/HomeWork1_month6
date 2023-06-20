@@ -24,7 +24,7 @@ class TaskAdapter(
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = taskList[position]
-        holder.onBind(task)
+        holder.onBind(task,onTaskCheckChanged)
 
     }
 
@@ -34,7 +34,7 @@ class TaskAdapter(
 
   inner  class TaskViewHolder(private val binding: ItemTaskBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(task: Task) {
+        fun onBind(task: Task,onTaskCheckChanged: (position: Int, isChecked: Boolean) -> Unit) {
             binding.tvTitle.text = task.title
             binding.check.isChecked = task.isDone
 
@@ -45,14 +45,7 @@ class TaskAdapter(
 
             itemView.setOnClickListener {
                 onLongClick(task)
-                false
             }
-        }
-
-        private fun onTaskCheckChanged(position: Int, isChecked: Boolean) {
-            val task = taskList[position]
-            task.toggleDone()
-            notifyItemChanged(position,isChecked)
         }
     }
 }
